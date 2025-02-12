@@ -1,0 +1,21 @@
+---
+import Layout from './Layout.astro';
+import { getCollection } from 'astro:content';
+
+const { frontmatter } = Astro.props;
+const docs = await getCollection('docs');
+---
+
+<Layout title={frontmatter.title}>
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold text-gray-900">{frontmatter.title}</h1>
+    </div>
+  </header>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    {frontmatter.description && <p class="text-gray-600 mb-8">{frontmatter.description}</p>}
+    <article class="prose prose-lg">
+      <slot />
+    </article>
+  </main>
+</Layout>

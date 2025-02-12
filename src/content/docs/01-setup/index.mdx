@@ -1,0 +1,24 @@
+---
+title: "Setup Guide"
+description: "Learn how to set up the project."
+---
+
+import CodeTabs from "../../../components/CodeTabs";
+import rustCode from "./rust.md?raw";
+import pythonCode from "./python.md?raw";
+import cppCode from "./cpp.md?raw";
+
+{/* Don't forget to import the Prism CSS theme where it won't be imported multiple times */}
+import 'prismjs/themes/prism-tomorrow.css'; // or your preferred theme
+export const runtime = "edge";
+
+
+<CodeTabs
+  client:load
+  tabs={[
+    { lang: "python", content: pythonCode },
+    { lang: "cpp", content: cppCode },
+    { lang: "rust", content: rustCode }
+  ]}
+/>
+

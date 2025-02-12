@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Welcome from '../components/Welcome.astro';
+
+// Define a list of code-related files to exclude
+const excludedPages = ["cpp", "python", "rust"];
+
+const docs = await getCollection('docs');
+
+// Filter out unwanted pages
+const groupedDocs = docs.reduce((acc, doc) => {
+  const slugParts = doc.slug.split('/');
+  const fileName = slugParts[slugParts.length - 1]; // Get last segment
+
+  if (excludedPages.includes(fileName)) return acc; // Exclude code files
+
+  const mainSection = slugParts[0];
+
+  if (!acc[mainSection]) {
+    acc[mainSection] = [];
+  }
+  acc[mainSection].push({
+    slug: doc.slug,
+    title: doc.data.title || fileName.replace(/^\d+-/, '').split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' '),
+    description: doc.data.description
+  });
+
+  return acc;
+}, {});
+---
+
+<Layout title="Shuriken Documentation">
+  <Welcome />
+  <div class="max-w-4xl mx-auto p-6">
+    <div class="space-y-8">
+      {Object.entries(groupedDocs).map(([section, pages]) => (
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h2 class="text-2xl font-semibold mb-4">
+            {section.replace(/^\d+-/, '').split('-').map(word => 
+              word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ')}
+          </h2>
+          <ul class="space-y-2">
+            {pages.map((page) => (
+              <li>
+                <a 
+                  href={`/Shuriken-doc/docs/${page.slug}`}
+                  class="text-blue-600 hover:text-blue-800 text-lg flex items-center group"
+                >
+                  <span class="mr-2">→</span>
+                  {page.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
