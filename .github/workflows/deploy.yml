@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+
+    steps:
+      # Clean workspace first
+      - name: Clean workspace
+        run: |
+          rm -rf ./* || true
+          rm -rf ./.* || true
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GH_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install and Build
+        run: |
+          npm ci
+          npm run build
+          git config --global user.email "github-actions@shuriken-group.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Deploy
+        run: |
+          npx gh-pages -d dist --repo=git@github.com:Shuriken-Group/Shuriken-doc.git
