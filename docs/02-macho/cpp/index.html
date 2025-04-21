@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/Shuriken-doc/favicon.svg"><meta name="generator" content="Astro v5.2.5"><title>C++ Mach-O</title><!-- ✅ Add Shiki syntax highlighting styles --><link rel="stylesheet" href="/Shuriken-doc/_astro/_slug_.CrJTr9iO.css">
+<style>code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.comment,.token.block-comment,.token.prolog,.token.doctype,.token.cdata{color:#999}.token.punctuation{color:#ccc}.token.tag,.token.attr-name,.token.namespace,.token.deleted{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.number,.token.function{color:#f08d49}.token.property,.token.class-name,.token.constant,.token.symbol{color:#f8c555}.token.selector,.token.important,.token.atrule,.token.keyword,.token.builtin{color:#cc99cd}.token.string,.token.char,.token.attr-value,.token.regex,.token.variable{color:#7ec699}.token.operator,.token.entity,.token.url{color:#67cdcc}.token.important,.token.bold{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}
+</style></head> <body data-astro-cid-sckkx6r4> <div class="min-h-screen bg-gray-50" data-astro-cid-sckkx6r4>  <header class="bg-white shadow"> <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"> <h1 class="text-3xl font-bold text-gray-900">C++ Mach-O</h1> </div> </header> <main class="max-w-4xl mx-auto px-4 py-8">  <article class="prose prose-lg">  <pre><code class="language-cpp">#include &#x3C;iostream>
+#include &#x3C;string>
+#include &#x3C;shuriken/parser/shuriken_parsers.h>
+
+using namespace shuriken::parser;
+
+int main() {
+    // Parse Mach-O
+    const std::string &#x26;file_path = "&#x3C;Path-To-Mach-O-File>";
+    std::unique_ptr&#x3C;macho::Parser> parsed_macho = parse_macho(file_path);
+
+    // Retrieve and print Mach-O header
+    const macho::MachoHeader &#x26;header = parsed_macho->get_header();
+    const macho::MachoHeader::machoheader_t &#x26;macho_header = header.get_macho_header_const();
+
+    std::cout &#x3C;&#x3C; "Mach-O Header:" &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Magic:                 0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.magic &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " CPU type:              0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.cputype &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " CPU subtype:           0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.cpusubtype &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Filetype:              0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.filetype &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Number of commands:    " &#x3C;&#x3C; macho_header.ncmds &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Size of commands:      " &#x3C;&#x3C; macho_header.sizeofcmds &#x3C;&#x3C; " bytes" &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Flags:                 0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.flags &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    std::cout &#x3C;&#x3C; " Reserved:              0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; macho_header.reserved &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+
+    // Retrieve and print Mach-O segment commands
+    const macho::MachoCommands &#x26;commands = parsed_macho->get_commands();
+    const macho::MachoCommands::segmentcommands_s_t &#x26;macho_segmentcommands = commands.get_macho_segmentcommands_const();
+
+    for (const auto&#x26; segmentcommand : macho_segmentcommands) {
+        const auto&#x26; segmentcommand_ref = segmentcommand.get();  
+        std::cout &#x3C;&#x3C; "Segment command: 0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.cmd &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Size:                  " &#x3C;&#x3C; segmentcommand_ref.cmdsize &#x3C;&#x3C; " bytes" &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Name:                  " &#x3C;&#x3C; segmentcommand_ref.segname &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " VM address:            0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.vmaddr &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " VM size:               " &#x3C;&#x3C; segmentcommand_ref.vmsize &#x3C;&#x3C; " bytes" &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Offset in file:        0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.fileoff &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Size in file:          " &#x3C;&#x3C; segmentcommand_ref.filesize &#x3C;&#x3C; " bytes" &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Max memory protection: 0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.maxprot &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Initial memory prot:   0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.initprot &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Number of Sections:    0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.nsects &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+        std::cout &#x3C;&#x3C; " Flags:                 0x" &#x3C;&#x3C; std::hex &#x3C;&#x3C; segmentcommand_ref.flags &#x3C;&#x3C; std::dec &#x3C;&#x3C; std::endl;
+    }    
+ 
+    return 0;
+}
+</code></pre>  </article> </main>  </div> </body></html>
