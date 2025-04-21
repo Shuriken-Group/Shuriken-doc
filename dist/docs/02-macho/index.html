@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-astro-cid-sckkx6r4>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <meta name="generator" content="Astro v5.2.5">
+        <title>Mach-O Guide</title>
+        <link rel="stylesheet" href="/Shuriken-doc/_astro/_slug_.Cu9AsGWq.css">
+        
+        <style>
+            pre.astro-code {
+                border-radius: 12px;
+                padding: 16px;        
+            }
+            .prose { max-width: none; } 
+            .keyword { color: #F97583; }
+            .type { color: #B392F0; }
+            .string { color: #9ECBFF; }
+            .comment { color: #6a9955; } 
+        </style>
+    </head>
+
+    <body data-astro-cid-sckkx6r4>  
+        <main class="max-w-4xl mx-auto px-4 py-8"> 
+            <h1 class="text-4xl font-bold mb-4">Mach-O Guide</h1>  
+            <p>Learn how to parse a Mach-O file and, for example, print its header and segment commands.</p>
+            <article class="prose prose-lg">  
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="cpp">
+                    <code>
+<span class="line"><span class="keyword">#include</span><span class="string"> &lt;iostream&gt;</span></span>
+<span class="line"><span class="keyword">#include</span><span class="string"> &lt;string&gt;</span></span>
+<span class="line"><span class="keyword">#include</span><span class="string"> &lt;shuriken/parser/shuriken_parsers.h&gt;</span></span>
+
+<span class="line"><span class="keyword">using</span> <span class="type">namespace</span> shuriken::parser;</span>
+
+<span class="line"><span class="keyword">int</span> <span class="type">main</span>() {</span>
+    <span class="line"><span class="comment">// Parse Mach-O</span></span>
+    <span class="line"><span class="keyword">const</span> <span class="type">std::string</span> <span class="variable">&file_path</span> = <span class="string">"&lt;Path-To-Mach-O-File&gt;"</span>;</span>
+    <span class="line"><span class="keyword">std::unique_ptr&lt;</span><span class="type">macho::Parser</span><span class="keyword">&gt;</span> <span class="variable">parsed_macho</span> = parse_macho(<span class="variable">file_path</span>);</span>
+
+    <span class="line"><span class="comment">// Retrieve and print Mach-O header</span></span>
+    <span class="line"><span class="type">const macho::MachoHeader</span> <span class="variable">&header</span> = <span class="variable">parsed_macho</span>-&gt;<span class="type">get_header</span>();</span>
+    <span class="line"><span class="type">const macho::MachoHeader::machoheader_t</span> <span class="variable">&macho_header</span> = <span class="variable">header</span>-&gt;<span class="type">get_macho_header_const</span>();</span>
+
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">"Mach-O Header:"</span><span class="keyword">&lt;&lt;</span></span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Magic:                 0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">magic</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" CPU type:              0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">cputype</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" CPU subtype:           0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">cpusubtype</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Filetype:              0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">filetype</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Number of commands:    "</span> <span class="variable">macho_header</span>.<span class="type">ncmds</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Size of commands:      "</span> <span class="variable">macho_header</span>.<span class="type">sizeofcmds</span> <span class="string">" bytes"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Flags:                 0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">flags</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Reserved:              0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">macho_header</span>.<span class="type">reserved</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+
+    <span class="line"><span class="comment">// Retrieve and print Mach-O segment commands</span></span>
+    <span class="line"><span class="type">const macho::MachoCommands</span> <span class="variable">&commands</span> = <span class="variable">parsed_macho</span>-&gt;<span class="type">get_commands</span>();</span>
+    <span class="line"><span class="type">const macho::MachoCommands::segmentcommands_s_t</span> <span class="variable">&macho_segmentcommands</span> = <span class="variable">commands</span>-&gt;<span class="type">get_macho_segmentcommands_const</span>();</span>
+
+    <span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="type">auto</span> <span class="variable">&segmentcommand</span> : <span class="variable">macho_segmentcommands</span>) {</span>
+        <span class="line"><span class="type">const auto</span> <span class="variable">&segmentcommand_ref</span> = <span class="variable">segmentcommand</span>.<span class="type">get</span>();</span>
+            
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">"Segment command: 0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">cmd</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Size:                  "</span> <span class="variable">segmentcommand_ref</span>.<span class="type">cmdsize</span> <span class="string">" bytes"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Name:                  "</span> <span class="variable">segmentcommand_ref</span>.<span class="type">segname</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" VM address:            0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">vmaddr</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" VM size:               "</span> <span class="variable">segmentcommand_ref</span>.<span class="type">vmsize</span> <span class="string">" bytes"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Offset in file:        0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">fileoff</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Size in file:          "</span> <span class="variable">segmentcommand_ref</span>.<span class="type">filesize</span> <span class="string">" bytes"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Max memory protection: 0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">maxprot</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Initial memory prot:   0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">initprot</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Number of Sections:    0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">nsects</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+        <span class="line"><span class="type">std::cout</span> <span class="keyword">&lt;&lt;</span> <span class="string">" Flags:                 0x"</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::hex</span> <span class="keyword">&lt;&lt;</span> <span class="variable">segmentcommand_ref</span>.<span class="type">flags</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::dec</span> <span class="keyword">&lt;&lt;</span> <span class="type">std::endl</span>;</span>
+    <span class="line">}</span>
+
+    <span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span>
+<span class="line">}</span>
+                    </code>                          
+                </pre>
+            </article>
+        </main>
+    </body>
+</html>
