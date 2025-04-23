@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-astro-cid-sckkx6r4>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <meta name="generator" content="Astro v5.2.5">
+        <title>Shuriken Python Guide</title>
+        <link rel="stylesheet" href="/Shuriken-doc/_astro/_slug_.Cu9AsGWq.css">
+        
+        <style>
+            pre.astro-code {
+                border-radius: 12px;
+                padding: 16px;        
+            }
+            .prose { max-width: none; } 
+            .keyword { color: #F97583; }
+            .type { color: #B392F0; }
+            .string { color: #9ECBFF; }
+            .comment { color: #6a9955; } 
+        </style>
+    </head>
+
+    <body data-astro-cid-sckkx6r4>  
+        <main class="max-w-4xl mx-auto px-4 py-8"> 
+            <h1 class="text-4xl font-bold mb-4">Shuriken Python Library Documentation</h1>  
+            <p>A comprehensive guide to analyzing Android APK files and Java-related bytecodes with the Shuriken Python library.</p>
+            <article class="prose prose-lg">
+                <h2 class="text-2xl font-bold mt-6 mb-3">Overview</h2>
+                <p>Shuriken is a Python library designed for binary analysis, primarily focused on analyzing Android APK files and Java-related bytecodes. It provides tools for parsing, disassembling, and analyzing the internal structure of APK files, with a particular focus on method analysis.</p>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Installation</h2>
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="bash">
+                    <code>
+<span class="line"><span class="comment"># Install directly from GitHub repository</span></span>
+<span class="line"><span class="type">pip</span> <span class="keyword">install</span> <span class="string">git+https://github.com/Shuriken-Group/Shuriken-Analyzer.git@main#subdirectory=shuriken/bindings/Python/</span></span>
+                    </code>                          
+                </pre>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Basic Usage</h2>
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="python">
+                    <code>
+<span class="line"><span class="keyword">from</span> <span class="type">shuriken</span> <span class="keyword">import</span> *</span>
+
+<span class="line"><span class="comment"># Load an APK file for analysis</span></span>
+<span class="line"><span class="type">app</span> = <span class="keyword">Apk</span>(<span class="string">"app.apk"</span>)</span>
+                    </code>                          
+                </pre>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Core Features</h2>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">APK Analysis</h3>
+                <p>Shuriken provides comprehensive capabilities for analyzing Android application packages:</p>
+                <ul class="list-disc pl-6 my-3">
+                    <li>Extract and analyze DEX files</li>
+                    <li>Access method information</li>
+                    <li>Determine whether methods are external or internal</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">Method Analysis</h3>
+                <p>Shuriken can retrieve detailed information about methods within an APK's DEX files:</p>
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="python">
+                    <code>
+<span class="line"><span class="comment"># Get number of classes in a specific DEX file</span></span>
+<span class="line"><span class="type">n</span> = <span class="type">apk</span>.<span class="keyword">get_number_of_classes_for_dex_file</span>(<span class="string">"classes.dex"</span>)</span>
+
+<span class="line"><span class="comment"># Iterate through methods</span></span>
+<span class="line"><span class="keyword">for</span> <span class="type">i</span> <span class="keyword">in</span> <span class="type">range</span>(<span class="type">n</span>):</span>
+<span class="line">    <span class="type">method</span> = <span class="type">apk</span>.<span class="keyword">get_analyzed_method_by_idx</span>(<span class="type">i</span>)</span>
+<span class="line">    <span class="keyword">print</span>(<span class="type">method</span>.<span class="keyword">name</span>, <span class="type">method</span>.<span class="keyword">external</span>)</span>
+                    </code>                          
+                </pre>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">API Reference</h2>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">Apk Class</h3>
+                <p>The main class for working with Android APK files.</p>
+                
+                <h4 class="text-lg font-bold mt-3 mb-1">Constructor</h4>
+                <ul class="list-disc pl-6 my-2">
+                    <li><code>Apk(file_path)</code>: Creates a new APK analyzer instance
+                        <ul class="list-disc pl-6 my-1">
+                            <li><code>file_path</code>: Path to the APK file to analyze</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4 class="text-lg font-bold mt-3 mb-1">Methods</h4>
+                <ul class="list-disc pl-6 my-2">
+                    <li><code>get_number_of_classes_for_dex_file(dex_filename)</code>: Returns the number of methods in the specified DEX file
+                        <ul class="list-disc pl-6 my-1">
+                            <li><code>dex_filename</code>: Name of the DEX file to analyze (e.g., "classes.dex")</li>
+                            <li>Returns: Integer representing the number of methods</li>
+                        </ul>
+                    </li>
+                    <li><code>get_analyzed_method_by_idx(index)</code>: Retrieves method information by index
+                        <ul class="list-disc pl-6 my-1">
+                            <li><code>index</code>: Integer index of the method to retrieve</li>
+                            <li>Returns: A method object with properties such as <code>name</code> and <code>external</code></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">Method Properties</h3>
+                <p>When retrieving method information using <code>get_analyzed_method_by_idx()</code>, the returned object has the following properties:</p>
+                <ul class="list-disc pl-6 my-3">
+                    <li><code>name</code>: Binary string containing the method name</li>
+                    <li><code>external</code>: Boolean (0 or 1) indicating whether the method is external (1) or internal (0)</li>
+                </ul>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Example Output</h2>
+                <p>The following output shows a sample of methods analyzed from an APK file:</p>
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="text">
+                    <code>
+<span class="line"><span class="string">b'valueOf'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'isQueryRefinementEnabled'</span> <span class="number">0</span></span>
+<span class="line"><span class="string">b'onWrite'</span> <span class="number">0</span></span>
+<span class="line"><span class="string">b'getContext'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'getScaledTouchSlop'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'offsetTopAndBottom'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'&lt;init&gt;'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'getHeight'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'getWidth'</span> <span class="number">1</span></span>
+<span class="line"><span class="string">b'getResources'</span> <span class="number">1</span></span>
+<span class="line"><span class="comment">...</span></span>
+                    </code>                          
+                </pre>
+                <p>The output format is:</p>
+                <ul class="list-disc pl-6 my-3">
+                    <li>Method name (as binary string)</li>
+                    <li>External status (1 = external, 0 = internal)</li>
+                </ul>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Advanced Usage</h2>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">Analyzing Multiple Methods</h3>
+                <pre class="astro-code github-dark" 
+                    style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" 
+                    tabindex="0" data-language="python">
+                    <code>
+<span class="line"><span class="keyword">from</span> <span class="type">shuriken</span> <span class="keyword">import</span> *</span>
+
+<span class="line"><span class="type">app</span> = <span class="keyword">Apk</span>(<span class="string">"app.apk"</span>)</span>
+<span class="line"><span class="type">dex_file</span> = <span class="string">"classes.dex"</span></span>
+
+<span class="line"><span class="comment"># Get total method count</span></span>
+<span class="line"><span class="type">method_count</span> = <span class="type">app</span>.<span class="keyword">get_number_of_classes_for_dex_file</span>(<span class="type">dex_file</span>)</span>
+<span class="line"><span class="keyword">print</span>(<span class="string">f"Total methods in {dex_file}: {method_count}"</span>)</span>
+
+<span class="line"><span class="comment"># Analyze methods</span></span>
+<span class="line"><span class="type">external_methods</span> = <span class="number">0</span></span>
+<span class="line"><span class="type">internal_methods</span> = <span class="number">0</span></span>
+
+<span class="line"><span class="keyword">for</span> <span class="type">i</span> <span class="keyword">in</span> <span class="type">range</span>(<span class="type">method_count</span>):</span>
+<span class="line">    <span class="type">method</span> = <span class="type">app</span>.<span class="keyword">get_analyzed_method_by_idx</span>(<span class="type">i</span>)</span>
+<span class="line">    <span class="keyword">if</span> <span class="type">method</span>.<span class="keyword">external</span> == <span class="number">1</span>:</span>
+<span class="line">        <span class="type">external_methods</span> += <span class="number">1</span></span>
+<span class="line">    <span class="keyword">else</span>:</span>
+<span class="line">        <span class="type">internal_methods</span> += <span class="number">1</span></span>
+
+<span class="line"><span class="keyword">print</span>(<span class="string">f"External methods: {external_methods}"</span>)</span>
+<span class="line"><span class="keyword">print</span>(<span class="string">f"Internal methods: {internal_methods}"</span>)</span>
+                    </code>                          
+                </pre>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Related Tools</h2>
+                <p>Shuriken is part of a growing ecosystem of tools for Android APK analysis:</p>
+                <ul class="list-disc pl-6 my-3">
+                    <li><strong>Androguard</strong>: Full Python tool for analyzing Android files</li>
+                    <li><strong>APKTool</strong>: Tool for reverse engineering Android APK files</li>
+                    <li><strong>ClassyShark</strong>: Standalone binary inspection tool for Android developers</li>
+                    <li><strong>APK Analyzer</strong>: Android Studio's built-in tool for APK analysis</li>
+                </ul>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">Notes</h2>
+                <ul class="list-disc pl-6 my-3">
+                    <li>Method names are returned as binary strings (prefixed with <code>b'</code>)</li>
+                    <li>The <code>external</code> property is represented as an integer (0 or 1) rather than a boolean</li>
+                </ul>
+                
+                <h2 class="text-2xl font-bold mt-6 mb-3">References</h2>
+                <p>Shuriken is developed by the Shuriken Group and is focused on binary analysis of Java-related bytecodes.</p>
+                <p>For more information, visit:</p>
+                <ul class="list-disc pl-6 my-3">
+                    <li><a href="https://github.com/Shuriken-Group/Shuriken-Analyzer" class="text-blue-500 hover:underline">Shuriken-Analyzer GitHub Repository</a></li>
+                </ul>
+            </article>
+        </main>
+    </body>
+</html>
