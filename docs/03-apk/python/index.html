@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/Shuriken-doc/favicon.svg"><meta name="generator" content="Astro v5.2.5"><title>Python APK</title><!-- ✅ Add Shiki syntax highlighting styles --><link rel="stylesheet" href="/Shuriken-doc/_astro/_slug_.CrJTr9iO.css">
+<style>code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.comment,.token.block-comment,.token.prolog,.token.doctype,.token.cdata{color:#999}.token.punctuation{color:#ccc}.token.tag,.token.attr-name,.token.namespace,.token.deleted{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.number,.token.function{color:#f08d49}.token.property,.token.class-name,.token.constant,.token.symbol{color:#f8c555}.token.selector,.token.important,.token.atrule,.token.keyword,.token.builtin{color:#cc99cd}.token.string,.token.char,.token.attr-value,.token.regex,.token.variable{color:#7ec699}.token.operator,.token.entity,.token.url{color:#67cdcc}.token.important,.token.bold{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}
+</style></head> <body data-astro-cid-sckkx6r4> <div class="min-h-screen bg-gray-50" data-astro-cid-sckkx6r4>  <header class="bg-white shadow"> <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"> <h1 class="text-3xl font-bold text-gray-900">Python APK</h1> </div> </header> <main class="max-w-4xl mx-auto px-4 py-8">  <article class="prose prose-lg">  <pre><code class="language-python">import os
+import sys
+from shuriken import *
+
+def main():
+    # Parse APK file
+    file_path = "&#x3C;Path-To-APK-File>"
+    parsed_apk = Apk(file_path)
+    
+    # Get the number of classes in the DEX file
+    dex_file = "classes.dex"
+    num_methods = parsed_apk.get_number_of_methods_for_dex_file(dex_file)
+    
+    print(f"APK Analysis for {file_path}")
+    print(f"Total methods in {dex_file}: {num_methods}")
+    print("\nMethod Analysis:")
+    print(f"{'Method Name':&#x3C;40} {'External'}")
+    print("-" * 50)
+    
+    # Iterate through all methods and print their information
+    for i in range(num_methods):
+        method = parsed_apk.get_analyzed_method_by_idx(i)
+        print(f"{method.name.decode('utf-8'):&#x3C;40} {method.external}")
+        
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
+</code></pre>  </article> </main>  </div> </body></html>
