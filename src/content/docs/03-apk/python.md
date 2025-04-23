@@ -14,8 +14,7 @@ def main():
     
     # Get the number of classes in the DEX file
     dex_file = "classes.dex"
-    num_methods = parsed_apk.get_number_of_methods_for_dex_file(dex_file)
-    
+    num_methods = parsed_apk.get_number_of_classes_for_dex_file(dex_file) 
     print(f"APK Analysis for {file_path}")
     print(f"Total methods in {dex_file}: {num_methods}")
     print("\nMethod Analysis:")
